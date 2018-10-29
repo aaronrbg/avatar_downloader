@@ -3,12 +3,23 @@ var http = require('http');
 //INPUT: github user, repository name
 //OUTPUT: a folder called avatars in root with images of repo contributors named according to contributor's name
 function download_avatars() {
-    http.get('http://api.github.com/repos/:jensen/:moresql-notes/collaborators', function(response){
-        console.log(response);
-    })
+    http.get('http://api.github.com/repos/jensen/moresql-notes/collaborators', function(response){
+        if(response.statusCode !== 200) {
+            console.log("Error with status code" + response.statusCode);
+        } else {
+            var body = '';
+            response.setEncoding('utf-8');
+            response.on('data', function(chunk) {
+                body += chunk;
+            });
+            response.on('end', function() {
+                callback(null, body);
+            });
+            return body;
+        }
+    });
 }
-
-download_avatars();
+console.log(download_avatars());
 
 // //example code from lecture
 // function makeRequest(callback) {
