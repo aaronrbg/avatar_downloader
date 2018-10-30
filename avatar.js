@@ -22,16 +22,36 @@ function getRepoContributors(repoOwner, repoName, callback) {
   var options = {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
-      'User-Agent': 'request',
-      'Authorization': github_token
+      'User-Agent': 'request'
+      //'Authorization': github_token
+    },
+    qs: {
+      access_token: github_token
     }
   };
 
-  request(options, function(error, body, callback) {
+  request(options, function(error, body, callthing) {
+    
     data = JSON.parse(body.body);
-    console.log(data);
-    callback(error, data);
+
+    for(var contributor in data) {
+      let {login, avatar_url} = data[contributor];
+      callback(login, avatar_url);
+    }
   });
 }
 
-getRepoContributors('jquery', 'jquery', log)
+function downloadAvatar(id, avatar_url) {
+  request.get(avatar_url)            
+    .on('error', function (err) {                                   
+      throw err; 
+    })
+    .pipe(fs.createWriteStream('./avatars/' + [id] + ".JPEG"))
+        .on('finish', function(response) {
+          console.log('wrote a file!')
+        })              
+  }
+
+
+
+  getRepoContributors('jquery', 'jquery', downloadAvatar)
