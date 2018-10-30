@@ -1,4 +1,4 @@
-var https = require('https');  
+var mkdirp = require('mkdirp');
 var request = require('request');
 var getHTML = require('./getHTML');
 var dotenv = require('dotenv').config();
@@ -6,16 +6,15 @@ var fs = require('fs');
 
 
 var github_token = process.env.GITHUB_TOKEN
-var repoOwner = 'jquery'
-var repoName = 'jquery'
-var url = "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors/?access_token=" + github_token
+
+var repoOwner = process.argv[2]
+var repoName = process.argv[3]
 
 function log(err, response) {
   console.log(response);
 }
 
 //INPUT: github username and one of thier reposiotry names
-//OUTPUT: an array of objects with the name and url of repo contributor images
 
 function getRepoContributors(repoOwner, repoName, callback) {
 
@@ -52,6 +51,4 @@ function downloadAvatar(id, avatar_url) {
         })              
   }
 
-
-
-  getRepoContributors('jquery', 'jquery', downloadAvatar)
+getRepoContributors('jquery', 'jquery', downloadAvatar)

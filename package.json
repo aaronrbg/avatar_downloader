@@ -19,6 +19,7 @@
   "homepage": "https://github.com/aaronrbg/avatar_downloader#readme",
   "dependencies": {
     "dotenv": "^6.1.0",
+    "mkdirp": "^0.5.1",
     "request": "^2.88.0"
   }
 }
