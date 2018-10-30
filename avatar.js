@@ -1,9 +1,9 @@
-var http = require('http');
+var https = require('https');
 
 //INPUT: github user, repository name
 //OUTPUT: a folder called avatars in root with images of repo contributors named according to contributor's name
 function download_avatars() {
-    http.get('http://api.github.com/repos/jensen/moresql-notes/collaborators', function(response){
+    https.get('https://api.github.com/repos/jensen/moresql-notes/contributors', function(response){
         if(response.statusCode !== 200) {
             console.log("Error with status code" + response.statusCode);
         } else {
